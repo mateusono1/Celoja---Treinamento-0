@@ -92,19 +92,7 @@ def get_desconto(cheio,venda):
         return dis
 
 
-url='https://www.drogariaveracruz.com.br/medicamentos/'
-html=pegar_html(url)
 
-numero_paginas=num_pag(html)
-
-
-E=[]
-M=[]
-PC=[]
-PV=[]
-N=[]
-D=[]
-i=1
 
 def main(inicio,fim):
     for pagina in range (inicio,fim):
@@ -148,6 +136,21 @@ def main(inicio,fim):
 #105,131
 #131,157
 
+
+url='https://www.drogariaveracruz.com.br/medicamentos/'
+html=pegar_html(url)
+
+numero_paginas=num_pag(html)
+
+
+E=[]
+M=[]
+PC=[]
+PV=[]
+N=[]
+D=[]
+i=1
+
 pool=ThreadPoolExecutor(6)
 df1=pool.submit(main,1,27)
 df2=pool.submit(main,27,53)
@@ -156,8 +159,8 @@ df4=pool.submit(main,79,105)
 df5=pool.submit(main,105,131)
 df6=pool.submit(main,131,157)
 
-df1.result().to_excel("Teste1Vera.xlsx")
-df2.result().to_excel("Teste2Vera.xlsx")
+
+df6.result().to_excel("VeraCruzThread.xlsx")
 
 print("Terminou a execução")
 
