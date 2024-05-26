@@ -7,6 +7,10 @@ import math
 import multiprocessing
 import time
 from concurrent.futures import ThreadPoolExecutor
+import streamlit as st
+
+
+
 
 def pegar_html(link):  
     req=requests.get(link)
@@ -216,7 +220,6 @@ def main(inicio,fim):
     PV=[]
     N=[]
     D=[]
-
     for j in range(inicio,fim):
         json_pag=get_json(LINKS[j] + "1")
         json_generico=get_json(LINKS[0] + "1")
@@ -245,28 +248,35 @@ def main(inicio,fim):
             df1['Preço sem desconto']=p_s_des
             df1['Desconto']=DESCONTO
 
-            df=pd.concat([df,df1])  
+            df=pd.concat([df,df1])
+
 
     return df
 
+def thread():
+    pool=ThreadPoolExecutor(6)
+    df1=pool.submit(main,0,3)
+    df2=pool.submit(main,3,8)
+    df3=pool.submit(main,8,20)
+    df4=pool.submit(main,20,65)
+    df5=pool.submit(main,65,115)
+    df6=pool.submit(main,115,216)
+    
 
-pool=ThreadPoolExecutor(6)
-df1=pool.submit(main,0,3)
-df2=pool.submit(main,3,8)
-df3=pool.submit(main,8,20)
-df4=pool.submit(main,20,65)
-df5=pool.submit(main,65,115)
-df6=pool.submit(main,115,216)
+    
+    df1f=df1.result()
+    df2f=df2.result()
+    df3f=df3.result()
+    df4f=df4.result()
+    df5f=df5.result()
+    df6f=df6.result()
 
-df1f=df1.result()
-df2f=df2.result()
-df3f=df3.result()
-df4f=df4.result()
-df5f=df5.result()
-df6f=df6.result()
+    df=pd.concat([df1f,df2f,df3f,df4f,df5f,df6f])
+    df.reset_index(inplace=True,drop=True)
 
-df=pd.concat([df1f,df2f,df3f,df4f,df5f,df6f])
-df.reset_index(inplace=True,drop=True)
+    df.to_excel("MinasMaisThread.xlsx")
 
-df.to_excel("MinasMaisThread.xlsx")
+
+
+
 
