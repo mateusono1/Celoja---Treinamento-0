@@ -41,7 +41,7 @@ if st.button("Vera Cruz"):
     horario_final=horario_final.strftime("%H:%M")
     st.success(f"Extração Concluída. Iniciada às {horario_inicial} Finalizada às {horario_final}")
 if st.button("Farma Ponte"):
-    st.write("TRÊS")
+    st.write("TRÊSTESTE")
 
 
 
