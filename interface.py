@@ -49,13 +49,6 @@ if st.button("Farma Ponte"):
 st.markdown('<h1 style="text-align: left; color:rgb(19, 85, 98); font-family: Helvetica; font-size: 40px;">Insira que deseja selecionar (pós extração) </h1>',
     unsafe_allow_html=True)
 
-opções=["Nome","EAN","Preço c/desconto","Preço s/desconto","Desconto"]
-SELECIONADOS=st.multiselect("O que deseja buscar?",opções)
-
-
-
-
-
 NOME=df_minas["Nome"].unique()
 nome=st.selectbox("Produto",NOME)
 
@@ -65,3 +58,28 @@ for i in range(len(df_minas)):
         ean=df_minas.loc[i,"EAN"]
 st.write("O ean é: ",ean)
 st.write("A marca é: ",marca)
+
+
+
+
+
+opções=["Nome","EAN","Preço com desconto","Preço sem desconto","Desconto"]
+SELECIONADOS=st.multiselect("O que deseja buscar?",opções)
+
+
+
+
+##############
+df_bi=pd.DataFrame()
+for item_escolhido in SELECIONADOS:
+    print(item_escolhido)
+    df_bi_temp=df_minas.loc[df_minas["EAN"]==ean,item_escolhido]
+    df_bi=pd.concat([df_bi,df_bi_temp])
+    df_bi_temp=df_vera.loc[df_vera["EAN"]==ean,item_escolhido]
+    df_bi=pd.concat([df_bi,df_bi_temp])
+
+if st.button("Enviar para o PowerBI"):
+    df_bi.to_excel("DATAFRAME_POWERBI.xlsx")
+
+########ARRUMAR COMO AS INFOS SÃO INSERIDAS NA DF FINAL
+#MINHA IDEIA É FAZER VÁRIOS IF ELSE
