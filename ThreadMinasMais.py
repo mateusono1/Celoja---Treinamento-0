@@ -277,6 +277,3 @@ def thread():
     df.to_excel("MinasMaisThread.xlsx")
 
 
-
-
-

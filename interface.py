@@ -49,15 +49,38 @@ if st.button("Farma Ponte"):
 st.markdown('<h1 style="text-align: left; color:rgb(19, 85, 98); font-family: Helvetica; font-size: 40px;">Insira que deseja selecionar (pós extração) </h1>',
     unsafe_allow_html=True)
 
-NOME=df_minas["Nome"].unique()
-nome=st.selectbox("Produto",NOME)
+EAN1=df_minas["EAN"].unique()
+EAN1=EAN1.tolist()
+EAN2=df_vera["EAN"].unique()
+EAN2=EAN2.tolist()
 
-for i in range(len(df_minas)):
-    if df_minas.loc[i,"Nome"] == nome:
-        marca=df_minas.loc[i,"Marca"]
-        ean=df_minas.loc[i,"EAN"]
-st.write("O ean é: ",ean)
-st.write("A marca é: ",marca)
+TODOS_EAN=list(set(EAN1 + EAN2))
+
+
+
+
+###PEGANDO TODOS OS EAN DOS 2 SITES (EVITAR NOMES DIFERENTES)
+
+df_temp1=df_minas[df_minas["EAN"].isin(TODOS_EAN)]
+df_temp2=df_vera[df_vera["EAN"].isin(TODOS_EAN)]
+df_analise=pd.concat([df_temp1,df_temp2])
+df_analise.reset_index(inplace=True,drop=True)
+df_analise.drop(columns=["Unnamed: 0"],inplace=True)
+
+#df_analise.to_excel("AAAAAAAAAAAAAA.xlsx")
+
+NOME=[]
+for elem in df_analise["Nome"]:
+    NOME.append(elem)
+produto_selecionado=st.selectbox("Produto",NOME)
+
+ean=str(df_analise.loc[df_analise["Nome"]==produto_selecionado,"EAN"].iloc[0])
+st.write(ean)
+
+
+
+
+
 
 
 
@@ -70,14 +93,43 @@ SELECIONADOS=st.multiselect("O que deseja buscar?",opções)
 
 
 ##############
-df_bi=pd.DataFrame()
-for item_escolhido in SELECIONADOS:
-    print(item_escolhido)
-    df_bi_temp=df_minas.loc[df_minas["EAN"]==ean,item_escolhido]
-    df_bi=pd.concat([df_bi,df_bi_temp])
-    df_bi_temp=df_vera.loc[df_vera["EAN"]==ean,item_escolhido]
-    df_bi=pd.concat([df_bi,df_bi_temp])
+colunas=["Farmácia","Nome","EAN","Preço com desconto","Preço sem desconto","Desconto"]
+farmacias=["Minas Mais","Farma Ponte","Vera Cruz"]
+df_bi=pd.DataFrame(columns=colunas)
+df_bi["Farmácia"]=farmacias
 
+
+
+lista_minas=[]
+for elem in df_minas["EAN"]:
+    if elem != "SEM EAN":
+        elem=int(elem)
+        lista_minas.append(elem)
+lista_vera=[]
+for elem in df_vera["EAN"]:
+    if elem != "SEM EAN":
+        elem=int(elem)
+        lista_vera.append(elem)
+
+if st.button("Finalizar seleção das informações"):
+    print(SELECIONADOS)
+    for selecionado in SELECIONADOS:
+        #print(selecionado,type(selecionado)) tudo str
+        print(ean)
+
+        novo_valor=df_analise.loc[df_analise["EAN"]==ean,"Nome"]
+        print(novo_valor)
+        
+        #if int(ean) in lista_minas:
+           
+
+
+
+        #if int(ean) in lista_vera:
+            
+            
+
+    print(df_bi)
 if st.button("Enviar para o PowerBI"):
     df_bi.to_excel("DATAFRAME_POWERBI.xlsx")
 

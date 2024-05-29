@@ -135,6 +135,8 @@ def main(inicio,fim):
                 D.append(desconto)
             except requests.exceptions.Timeout:
                 pass
+            except AttributeError:
+                pass
 
 
         cont+=6
@@ -178,7 +180,7 @@ def thread():
 
 
 
-
+thread()
 #TESTE
 
 
