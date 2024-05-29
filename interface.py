@@ -129,7 +129,3 @@ if st.button("Enviar para o Excel"):
     linha=df_analise.loc[df_analise["EAN"]==ean,SELECIONADOS]
     linha.to_excel("DATAFRAME_OUTPUT.xlsx")
 
-########ARRUMAR COMO AS INFOS SÃO INSERIDAS NA DF FINAL
-#MINHA IDEIA É FAZER VÁRIOS IF ELSE
-
-#AAAAAAAAAAAAAa
