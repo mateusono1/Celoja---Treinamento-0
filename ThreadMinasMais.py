@@ -221,34 +221,37 @@ def main(inicio,fim):
     N=[]
     D=[]
     for j in range(inicio,fim):
-        json_pag=get_json(LINKS[j] + "1")
-        json_generico=get_json(LINKS[0] + "1")
-        pag=qtd_produtos(json_generico,MARCAS[j])
-        print(pag,MARCAS[j])
-        pag=pag/15
-        pag=math.ceil(pag) + 1
-        
-        for i in range(1,pag):
+        try:
+            json_pag=get_json(LINKS[j] + "1")
+            json_generico=get_json(LINKS[0] + "1")
+            pag=qtd_produtos(json_generico,MARCAS[j])
+            print(pag,MARCAS[j])
+            pag=pag/15
+            pag=math.ceil(pag) + 1
+            
+            for i in range(1,pag):
 
-            colunas =['EAN','Marca','Nome','Preço com desconto','Preço sem desconto','Desconto']
-            df1=pd.DataFrame(columns=colunas)
+                colunas =['EAN','Marca','Nome','Preço com desconto','Preço sem desconto','Desconto']
+                df1=pd.DataFrame(columns=colunas)
 
 
-            json_pag=get_json(LINKS[j] + str(i))
-            ean=get_ean(json_pag)
-            nomes_produtos=get_name(json_pag)
-            p_des=get_preço_c_desconto(json_pag)
-            p_s_des=get_preço_s_desconto(json_pag)
-            DESCONTO=desconto(p_s_des,p_des)
+                json_pag=get_json(LINKS[j] + str(i))
+                ean=get_ean(json_pag)
+                
+                nomes_produtos=get_name(json_pag)
+                p_des=get_preço_c_desconto(json_pag)
+                p_s_des=get_preço_s_desconto(json_pag)
+                DESCONTO=desconto(p_s_des,p_des)
 
-            df1['EAN']=ean
-            df1['Marca']=marcas[j]
-            df1['Nome']=nomes_produtos
-            df1['Preço com desconto']=p_des
-            df1['Preço sem desconto']=p_s_des
-            df1['Desconto']=DESCONTO
-
-            df=pd.concat([df,df1])
+                df1['EAN']=ean
+                df1['Marca']=marcas[j]
+                df1['Nome']=nomes_produtos
+                df1['Preço com desconto']=p_des
+                df1['Preço sem desconto']=p_s_des
+                df1['Desconto']=DESCONTO
+                df=pd.concat([df,df1])
+        except:
+            pass
     df["Drogaria"]="Minas Mais"
 
     return df
@@ -275,5 +278,4 @@ def thread():
     df.reset_index(inplace=True,drop=True)
 
     df.to_excel("MinasMaisThread.xlsx")
-
 

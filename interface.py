@@ -64,12 +64,19 @@ st.markdown('<h1 style="text-align: left; color:rgb(19, 85, 98); font-family: He
 
 EAN1=df_minas["EAN"].unique()
 EAN1=EAN1.tolist()
+
 EAN2=df_vera["EAN"].unique()
 EAN2=EAN2.tolist()
+
 EAN3=df_farma["EAN"].unique()
 EAN3=EAN3.tolist()
 
+
+
+
 TODOS_EAN=list(set(EAN1 + EAN2 + EAN3))
+
+
 
 
 
@@ -82,6 +89,9 @@ df_temp3=df_farma[df_farma["EAN"].isin(TODOS_EAN)]
 df_analise=pd.concat([df_temp1,df_temp2,df_temp3])
 df_analise.reset_index(inplace=True,drop=True)
 df_analise.drop(columns=["Unnamed: 0"],inplace=True)
+df_analise["EAN"]=df_analise["EAN"].astype(str)
+
+
 
 df_analise.to_excel("df_mesclada_interface.xlsx")
 
