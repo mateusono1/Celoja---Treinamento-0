@@ -69,8 +69,8 @@ class Scraper:
                 'EAN' : gtin13,
                 'Marca': marca,
                 'Nome': titulo,
-                'Preço com Desconto': preco_com_desconto,
-                'Preço sem Desconto': preco_sem_desconto,
+                'Preço com desconto': preco_com_desconto,
+                'Preço sem desconto': preco_sem_desconto,
                 'Desconto' : discount
             }
         else:
@@ -96,7 +96,7 @@ def main():
     numero_paginas = 229
     informacoes_produtos = scraper.extract_all_data(numero_paginas)
     df = pd.DataFrame(informacoes_produtos)
+    df["Drogaria"]="Farma Ponte"
     #print(df.to_string())
     df.to_excel('FarmaPonte.xlsx')
 
-main()

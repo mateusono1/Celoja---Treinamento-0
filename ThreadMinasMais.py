@@ -249,7 +249,7 @@ def main(inicio,fim):
             df1['Desconto']=DESCONTO
 
             df=pd.concat([df,df1])
-
+    df["Drogaria"]="Minas Mais"
 
     return df
 

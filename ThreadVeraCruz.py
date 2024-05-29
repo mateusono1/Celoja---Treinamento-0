@@ -137,7 +137,8 @@ def main(inicio,fim):
                 pass
             except AttributeError:
                 pass
-
+            except:
+                pass
 
         cont+=6
         print(f'{cont}/{numero_paginas} paginas lidas')
@@ -150,6 +151,7 @@ def main(inicio,fim):
         "Preço com desconto":PV,
         "Desconto":D
     })  
+    df["Drogaria"]= "Vera Cruz"
     return df
 
 #print(numero_paginas) #6 pools de 26 paginas cada
@@ -180,7 +182,6 @@ def thread():
 
 
 
-thread()
 #TESTE
 
 
